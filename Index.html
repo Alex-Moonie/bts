@@ -1,0 +1,328 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BTS - The Bulletproof Era</title>
+    <style>
+        :root {
+            --bts-purple: #7f55b3;
+            --bts-light: #f4f0f9;
+            --bts-gradient: linear-gradient(135deg, #a485d5 0%, #7f55b3 100%);
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: var(--bts-light);
+            margin: 0;
+            padding: 20px;
+            color: #2d2d2d;
+        }
+
+        header { text-align: center; padding: 30px 0; }
+        h1 { 
+            font-size: clamp(50px, 10vw, 80px); 
+            margin: 0;
+            background: var(--bts-gradient);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            letter-spacing: 5px;
+        }
+
+        .album-menu {
+            display: flex;
+            gap: 15px;
+            overflow-x: auto;
+            padding: 20px;
+            background: rgba(255, 255, 255, 0.9);
+            border-radius: 50px;
+            box-shadow: 0 10px 25px rgba(127, 85, 179, 0.1);
+            margin-bottom: 30px;
+            scrollbar-width: none;
+        }
+        .album-menu::-webkit-scrollbar { display: none; }
+
+        .album-circle {
+            min-width: 85px;
+            height: 85px;
+            border-radius: 50%;
+            padding: 3px;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+        .album-circle:hover { transform: scale(1.1); }
+        .album-circle img { width: 100%; height: 100%; border-radius: 50%; object-fit: cover; border: 2px solid white; }
+
+        .seccion-contenido {
+            background: white;
+            padding: 30px;
+            border-radius: 25px;
+            margin-bottom: 25px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.02);
+        }
+        h2 { color: var(--bts-purple); border-left: 5px solid var(--bts-purple); padding-left: 15px; }
+
+        .lista-integrantes {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+            padding: 0;
+            list-style: none;
+        }
+        .integrante-card {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            background: white;
+            padding: 15px;
+            border-radius: 30px;
+            border: 1px solid rgba(127, 85, 179, 0.2);
+            box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+        }
+        .foto-burbuja { width: 70px; height: 70px; border-radius: 50%; border: 3px solid var(--bts-purple); object-fit: cover; }
+        .bt21-burbuja { width: 50px; height: 50px; border-radius: 50%; background: #eee; padding: 5px; border: 2px dashed var(--bts-purple); }
+
+        .tabla-contenedor { overflow-x: auto; }
+        table { width: 100%; border-collapse: collapse; margin-top: 15px; }
+        th { background: var(--bts-purple); color: white; padding: 12px; }
+        td { padding: 12px; text-align: center; border-bottom: 1px solid #eee; }
+
+        #detalle-album {
+            display: none;
+            position: fixed;
+            top: 50%; left: 50%; transform: translate(-50%, -50%);
+            width: 90%; max-width: 650px;
+            background: white; padding: 35px; border-radius: 30px;
+            box-shadow: 0 0 50px rgba(0,0,0,0.2); z-index: 1000; text-align: center;
+            max-height: 85vh; overflow-y: auto;
+        }
+        .overlay {
+            display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0,0,0,0.5); backdrop-filter: blur(4px); z-index: 999;
+        }
+        .btn-cerrar {
+            background: #333; color: white; border: none;
+            padding: 10px 25px; border-radius: 20px; cursor: pointer; margin-top: 20px;
+        }
+        .caja-info {
+            text-align: left; padding: 20px; border-radius: 15px; margin-top: 15px; font-size: 14px;
+        }
+        .tracklist-grid { column-count: 2; padding-left: 20px; font-size: 12px; margin-top: 10px; line-height: 1.6; }
+        
+        .foto-grupal {
+            width: 100%; max-width: 450px; border-radius: 15px;
+            margin-bottom: 15px; box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <h1>BTS</h1>
+        <p style="color: var(--bts-purple); letter-spacing: 2px;">APOBANGPO 💜</p>
+        <div class="album-menu" id="menu-circulos"></div>
+    </header>
+
+    <main>
+        <section class="seccion-contenido">
+            <h2>The Bulletproof</h2>
+            <p>BTS no nació en la cima. En 2013, siete jóvenes de una agencia pequeña debutaron con el sueño de ser escuchados. Durmieron en una sola habitación y enfrentaron mil obstáculos, pero su fuerza fue su hermandad y su mensaje de "Amor Propio".</p>
+            <p>Hoy son el orgullo más grande de su país y una inspiración global. Su regreso en 2026 marca el inicio de una era donde su legado es ya indestructible.</p>
+        </section>
+
+        <section class="seccion-contenido">
+            <h2>Integrantes y BT21</h2>
+            <ul class="lista-integrantes">
+                <li class="integrante-card"><img src="https://alex-moonie.github.io/bts/rm.jpg" class="foto-burbuja"> <div style="flex-grow: 1;"><strong>RM</strong><br><small>Líder, Rapero Principal</small></div> <img src="https://alex-moonie.github.io/bts/koya.png" class="bt21-burbuja" title="Koya"></li>
+                <li class="integrante-card"><img src="https://alex-moonie.github.io/bts/jin.jpg" class="foto-burbuja"> <div style="flex-grow: 1;"><strong>Jin</strong><br><small>Vocalista, Visual</small></div> <img src="https://alex-moonie.github.io/bts/rj.png" class="bt21-burbuja" title="RJ"></li>
+                <li class="integrante-card"><img src="https://alex-moonie.github.io/bts/suga.jpg" class="foto-burbuja"> <div style="flex-grow: 1;"><strong>Suga</strong><br><small>Rapero, Productor</small></div> <img src="https://alex-moonie.github.io/bts/shooky.png" class="bt21-burbuja" title="Shooky"></li>
+                <li class="integrante-card"><img src="https://alex-moonie.github.io/bts/jhope.jpg" class="foto-burbuja"> <div style="flex-grow: 1;"><strong>J-Hope</strong><br><small>Rapero, Bailarín Principal</small></div> <img src="https://alex-moonie.github.io/bts/mang.png" class="bt21-burbuja" title="Mang"></li>
+                <li class="integrante-card"><img src="https://alex-moonie.github.io/bts/jimin.jpg" class="foto-burbuja"> <div style="flex-grow: 1;"><strong>Jimin</strong><br><small>Vocalista, Bailarín Principal</small></div> <img src="https://alex-moonie.github.io/bts/chimmy.png" class="bt21-burbuja" title="Chimmy"></li>
+                <li class="integrante-card"><img src="https://alex-moonie.github.io/bts/v.jpg" class="foto-burbuja"> <div style="flex-grow: 1;"><strong>V</strong><br><small>Vocalista, Visual</small></div> <img src="https://alex-moonie.github.io/bts/tata.png" class="bt21-burbuja" title="Tata"></li>
+                <li class="integrante-card"><img src="https://alex-moonie.github.io/bts/jk.jpg" class="foto-burbuja"> <div style="flex-grow: 1;"><strong>Jungkook</strong><br><small>Vocalista Principal, Centro</small></div> <img src="https://alex-moonie.github.io/bts/cooky.png" class="bt21-burbuja" title="Cooky"></li>
+            </ul>
+        </section>
+
+        <section class="seccion-contenido">
+            <h2>Cronología de Álbumes</h2>
+            <div class="tabla-contenedor">
+                <table>
+                    <thead><tr><th>Portada</th><th>Álbum</th><th>Año</th><th>Canciones</th></tr></thead>
+                    <tbody id="cuerpo-tabla"></tbody>
+                </table>
+            </div>
+        </section>
+    </main>
+
+    <div class="overlay" id="capa" onclick="cerrarAlbum()"></div>
+    <div id="detalle-album">
+        <div id="info-dinamica"></div>
+        <button class="btn-cerrar" onclick="cerrarAlbum()">CERRAR</button>
+    </div>
+
+    <script>
+        const baseImg = "https://alex-moonie.github.io/bts/";
+        let currentAudio = null;
+
+        const data = {
+            '2cool': { 
+                t: "2 Cool 4 Skool", a: "2013", i: "2cool.png", g: "f1.jpg", color: "#d9ae3b", m: "m1.mp3",
+                h: "El debut que lo inició todo. BTS irrumpe en la escena con un estilo Hip-Hop crudo para hablar sobre los sueños de los jóvenes.",
+                e: "Queremos decirte que no importa cuán pequeña sea tu voz, merece ser escuchada. ¡Sigue tu propio camino!",
+                c: ["Intro: 2 Cool 4 Skool", "We Are Bulletproof Pt.2", "Skit: Circle Room Talk", "No More Dream", "Interlude", "I Like It", "Outro: Circle Room Cipher", "Path"] 
+            },
+            'oru': { 
+                t: "O!RUL8,2?", a: "2013", i: "oru.png", g: "f2.jpg", color: "#e30613", m: "m2.mp3",
+                h: "Un álbum que cuestiona el sistema educativo y la presión de vivir bajo las expectativas de los demás.",
+                e: "ARMY, no te conviertas en un títere de la sociedad. Encuentra tu propia felicidad antes de que sea tarde.",
+                c: ["Intro: O!RUL8,2?", "N.O", "We On", "Skit: R U Happy Now?", "If I Ruled The World", "Coffee", "BTS Cypher Pt.1", "Attack on Bangtan", "Paldogangsan", "Outro: Luv in Skool"] 
+            },
+            'skool': { 
+                t: "Skool Luv Affair", a: "2014", i: "skull.png", g: "f3.jpg", color: "#4B5320", m: "m3.mp3",
+                h: "El cierre de la trilogía escolar, explorando el amor adolescente y las emociones vibrantes del corazón.",
+                e: "El amor también es una lección escolar. Gracias por ser nuestra motivación y nuestro primer amor.",
+                c: ["Intro: Skool Luv Affair", "Boy In Luv", "Skit: Soulmate", "Where You From", "Just One Day", "Tomorrow", "BTS Cypher Pt.2: Triptych", "Spine Breaker", "Jump", "Outro: Propose"] 
+            },
+            'dark': { 
+                t: "Dark & Wild", a: "2014", i: "dark.png", g: "f4.jpg", color: "#1a1a1a", m: "m4.mp3",
+                h: "Su primer álbum de estudio completo. Un sonido más oscuro y honesto sobre el desamor y la madurez.",
+                e: "A veces el amor es salvaje y nos hiere, pero esas cicatrices son las que nos hacen quienes somos hoy.",
+                c: ["Intro: What am I to you", "Danger", "War of Hormone", "Hip Hop Phile", "Let Me Know", "Rain", "BTS Cypher Pt.3: Killer", "Interlude: What Are You Doing?", "Can You Turn Off Your Phone", "Blanket Kick", "24/7=Heaven", "Look Here", "2nd Grade", "Outro: Does that make sense?"] 
+            },
+            'hyyh1': { 
+                t: "HYYH Pt.1", a: "2015", i: "p1.png", g: "f6.jpg", color: "#f3a3b5", m: "m5.mp3",
+                h: "El inicio de 'The Most Beautiful Moment in Life'. Un punto de inflexión donde mezclan pop y angustia juvenil.",
+                e: "Incluso en el dolor de la juventud, hay belleza. Estamos floreciendo junto a ti, ARMY.",
+                c: ["Intro: HYYH", "I Need U", "Hold Me Tight", "Skit: Expectation!", "Dope", "Boyz with Fun", "Converse High", "Moving On", "Outro: Love is Not Over"] 
+            },
+            'hyyh2': { 
+                t: "HYYH Pt.2", a: "2015", i: "p2.png", g: "f5.jpg", color: "#8fcad3", m: "m6.mp3",
+                h: "La continuación del viaje emocional, enfocándose en la energía de seguir adelante a pesar de las caídas.",
+                e: "No importa si te caes, lo importante es seguir corriendo. Nunca te detengas, nosotros vamos contigo.",
+                c: ["Intro: Never Mind", "Run", "Butterfly", "Whalien 52", "Ma City", "Baepsae", "Skit: One Night in a Strange City", "Autumn Leaves", "Outro: House of Cards"] 
+            },
+            'young': { 
+                t: "Young Forever", a: "2016", i: "young.png", g: "f7.jpg", color: "#f8e1a1", m: "m7.mp3",
+                h: "La recopilación final de la era HYYH que simboliza la inmortalidad de la juventud a través de la música.",
+                e: "Mientras cantemos juntos, seremos jóvenes para siempre. Este es nuestro regalo eterno para ARMY.",
+                c: ["Fire", "Save Me", "EPILOGUE: Young Forever", "I Need U", "Run", "Butterfly", "Autumn Leaves", "Love is Not Over", "House of Cards", "Dope"] 
+            },
+            'wings': { 
+                t: "Wings", a: "2016", i: "wings.png", g: "f19.jpg", color: "#4d4d4d", m: "m8.mp3",
+                h: "Un concepto profundo basado en la literatura (Demian), explorando la tentación y el crecimiento personal.",
+                e: "Tus alas son pequeñas ahora, pero juntas volaremos por encima de cualquier obstáculo.",
+                c: ["Intro: Boy Meets Evil", "Blood Sweat & Tears", "Begin", "Lie", "Stigma", "First Love", "Reflection", "MAMA", "Awake", "Lost", "BTS Cypher 4", "Am I Wrong", "21st Century Girl", "2! 3!", "Interlude: Wings"] 
+            },
+            'ynwa': { 
+                t: "You Never Walk Alone", a: "2017", i: "walk.png", g: "f8.jpg", color: "#66b2b2", m: "m9.mp3",
+                h: "Una extensión de Wings centrada en la esperanza, el consuelo y la fuerza de la unidad.",
+                e: "Aunque el invierno sea largo, la primavera siempre llega. Recuerda que nunca caminarás solo.",
+                c: ["Spring Day", "Not Today", "Outro: Wings", "A Supplementary Story: You Never Walk Alone"] 
+            },
+            'her': { 
+                t: "LY: Her", a: "2017", i: "hear.png", g: "f9.png", color: "#f2acc6", m: "m10.mp3",
+                h: "El inicio de la masiva era Love Yourself, descubriendo la alegría del amor y el destino.",
+                e: "Eres el centro de mi universo. Queremos que empieces este viaje para aprender a amarte.",
+                c: ["Intro: Serendipity", "DNA", "Best of Me", "dimple", "Pied Piper", "Skit: Billboard Music Awards", "MIC Drop", "Go Go", "Outro: Her", "Sea"] 
+            },
+            'tear': { 
+                t: "LY: Tear", a: "2018", i: "tear.png", g: "f10.jpg", color: "#4b4b4b", m: "m11.mp3",
+                h: "Un álbum oscuro que trata sobre la pérdida, el dolor de una máscara y el amor que se vuelve falso.",
+                e: "A veces amar significa enfrentar nuestras sombras. No tengas miedo de tus lágrimas, ARMY.",
+                c: ["Intro: Singularity", "Fake Love", "The Truth Untold", "134340", "Paradise", "Love Maze", "Magic Shop", "Airplane pt.2", "Anpanman", "So What", "Outro: Tear"] 
+            },
+            'answer': { 
+                t: "LY: Answer", a: "2018", i: "answer.png", g: "f11.jpg", color: "#e899bc", m: "m12.mp3",
+                h: "El gran cierre de Love Yourself. La revelación de que la respuesta siempre fue amarse a uno mismo.",
+                e: "Ayer cometí errores, pero sigo siendo yo. Amarme es lo más difícil, pero lo más importante.",
+                c: ["Euphoria", "Trivia: Just Dance", "Serendipity", "DNA", "dimple", "Trivia: Love", "Her", "Singularity", "FAKE LOVE", "The Truth Untold", "Trivia: Seesaw", "Tear", "Epiphany", "I'm Fine", "IDOL", "Answer: Love Myself"] 
+            },
+            'persona': { 
+                t: "MOTS: Persona", a: "2019", i: "mapPersona.png", g: "f12.jpg", color: "#f67ca6", m: "m13.mp3",
+                h: "Basado en la psicología de Jung, un viaje para descubrir quiénes somos ante el mundo y ante nosotros.",
+                e: "Queremos ser tu mapa, ARMY. Gracias por darnos una razón para existir y cantar.",
+                c: ["Intro: Persona", "Boy With Luv", "Mikrokosmos", "Make It Right", "HOME", "Jamais Vu", "Dionysus"] 
+            },
+            'mots7': { 
+                t: "MOTS: 7", a: "2020", i: "map7.png", g: "f13.jpg", color: "#2b4c9a", m: "m14.mp3",
+                h: "Celebrando siete años de carrera. Un reflejo de sus sombras y su luz como grupo inquebrantable.",
+                e: "Siete años, siete miembros. Somos uno gracias a ti. Somos Bulletproof por siempre.",
+                c: ["Intro: Persona", "Boy With Luv", "Make It Right", "Jamais Vu", "Dionysus", "Interlude: Shadow", "Black Swan", "Filter", "My Time", "Louder than bombs", "ON", "Ugh!", "00:00 (Zero O'Clock)", "Inner Child", "Friends", "Moon", "Respect", "We are Bulletproof: the Eternal", "Outro: Ego"] 
+            },
+            'be': { 
+                t: "BE", a: "2020", i: "be.png", g: "f14.jpg", color: "#303a45", m: "m15.mp3",
+                h: "Un álbum honesto creado durante la pandemia para dar consuelo y recordar que la vida sigue.",
+                e: "Incluso si el mundo se detiene, nosotros seguimos aquí. Respira, ARMY. La vida sigue.",
+                c: ["Life Goes On", "Fly To My Room", "Blue & Grey", "Skit", "Telepathy", "Dis-ease", "Stay", "Dynamite"] 
+            },
+            'butter': { 
+                t: "Butter", a: "2021", i: "butter.png", g: "f15.jpg", color: "#ffe05d", m: "m16.mp3",
+                h: "Una explosión de alegría y ritmo pop para iluminar los días difíciles con energía positiva.",
+                e: "¡Queremos verte bailar! No necesitas permiso para ser feliz. Brilla con nosotros.",
+                c: ["Butter", "Permission to Dance"] 
+            },
+            'proof': { 
+                t: "Proof", a: "2022", i: "Proof.png", g: "f17.jpg", color: "#212121", m: "m17.mp3",
+                h: "Una antología histórica que resume una década de lucha, éxito y amor incondicional.",
+                e: "Nuestra prueba es nuestra historia contigo. Lo mejor está por venir, tenlo por seguro.",
+                c: ["Yet To Come (The Most Beautiful Moment)", "Run BTS", "For Youth", "Born Singer", "No More Dream", "N.O", "Fire", "DNA", "IDOL", "Dynamite", "Butter"] 
+            },
+            'arirang': { 
+                t: "ARIRANG", a: "2026", i: "arirang.png", g: "f18.jpg", color: "#800020", m: "m18.mp3",
+                h: "El regreso triunfal tras el servicio militar. La madurez absoluta y el reencuentro con su destino.",
+                e: "Gracias por la espera eterna. Esta es nuestra nueva promesa: Apobangpo. Por siempre juntos.",
+                c: ["Body to Body", "Hooligan", "Aliens", "FYA", "2.0", "No. 29", "SWIM", "Merry Go Round", "Like Animal", "Normal", "They don't know us", "Into the Sun", "Come over"] 
+            }
+        };
+
+        const menu = document.getElementById('menu-circulos');
+        const tabla = document.getElementById('cuerpo-tabla');
+
+        for (let key in data) {
+            let album = data[key];
+            menu.innerHTML += `<div class="album-circle" style="background:${album.color}" onclick="abrirAlbum('${key}')"><img src="${baseImg}${album.i}"></div>`;
+            tabla.innerHTML += `<tr><td><img src="${baseImg}${album.i}" style="width:40px; border-radius:5px;"></td><td>${album.t}</td><td>${album.a}</td><td>${album.c.length}</td></tr>`;
+        }
+
+        function abrirAlbum(id) {
+            const album = data[id];
+            const modal = document.getElementById('detalle-album');
+            modal.style.borderTop = `10px solid ${album.color}`;
+
+            // CONTROL DE AUDIO ROBUSTO
+            if (currentAudio) { 
+                currentAudio.pause(); 
+                currentAudio.currentTime = 0; 
+            }
+
+            const rutaAudio = baseImg + album.m;
+            currentAudio = new Audio(rutaAudio);
+            
+            // Intentar reproducir y detectar errores en consola
+            currentAudio.play()
+                .then(() => console.log("Sonando: " + rutaAudio))
+                .catch(err => console.error("Error: Verifica el archivo en GitHub: " + rutaAudio));
+
+            document.getElementById('info-dinamica').innerHTML = `
+                <img src="${baseImg}${album.g}" class="foto-grupal">
+                <h2 style="color:${album.color}; border:none; margin:0;">${album.t}</h2>
+                <div class="caja-info" style="background:${album.color}15; border-left: 5px solid ${album.color}">
+                    <p><strong>📖 Historia:</strong> ${album.h}</p>
+                    <p><strong>💜 Para ARMY:</strong> ${album.e}</p>
+                    <hr style="opacity:0.2">
+                    <strong style="color:${album.color}">TRACKLIST COMPLETO:</strong>
+                    <ul class="tracklist-grid">${album.c.map(s => `<li>${s}</li>`).join('')}</ul>
+                </div>`;
+            
+            modal.style.display = 'block';
+            document.getElementById('capa').style.display = 'block';
+        }
+
+        function cerrarAlbum() {
+            if (currentAudio) { currentAudio.pause(); currentAudio = null; }
+            document.getElementById('detalle-album').style.display = 'none';
+            document.getElementById('capa').style.display = 'none';
+        }
+    </script>
+</body>
+</html>
