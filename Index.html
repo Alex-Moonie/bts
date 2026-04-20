@@ -4,29 +4,67 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>BTS - The Bulletproof Era</title>
+    <link href="https://fonts.googleapis.com/css2?family=Pacifico&family=Quicksand:wght@400;600&display=swap" rel="stylesheet">
+    
     <style>
         :root {
             --bts-purple: #7f55b3;
             --bts-light: #f4f0f9;
             --bts-gradient: linear-gradient(135deg, #a485d5 0%, #7f55b3 100%);
+            --bts-pink: #ff4fa1;
+            --pastel-purple: #e2d1f9;
+            --pastel-pink: #f9d1e2;
         }
 
         body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background-color: var(--bts-light);
+            font-family: 'Quicksand', sans-serif;
+            background: linear-gradient(135deg, #fce4ec 0%, #f3e5f5 100%);
+            background-attachment: fixed;
             margin: 0;
             padding: 20px;
             color: #2d2d2d;
+            line-height: 1.6;
+            scroll-behavior: smooth;
         }
 
         header { text-align: center; padding: 30px 0; }
+        
         h1 { 
+            font-family: 'Pacifico', cursive;
             font-size: clamp(50px, 10vw, 80px); 
             margin: 0;
             background: var(--bts-gradient);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
-            letter-spacing: 5px;
+            letter-spacing: 2px;
+            font-weight: normal;
+        }
+
+        .nav-principal {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 10px;
+            margin-top: 15px;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+        .nav-link {
+            text-decoration: none;
+            padding: 12px 15px;
+            border-radius: 20px;
+            font-size: 14px;
+            font-weight: bold;
+            transition: 0.3s;
+            background: var(--pastel-purple);
+            color: var(--bts-purple);
+            text-align: center;
+            -webkit-tap-highlight-color: transparent;
+        }
+        
+        .nav-link:hover {
+            background-color: #fce4ec;
+            color: var(--bts-purple);
         }
 
         .album-menu {
@@ -37,8 +75,9 @@
             background: rgba(255, 255, 255, 0.9);
             border-radius: 50px;
             box-shadow: 0 10px 25px rgba(127, 85, 179, 0.1);
-            margin-bottom: 30px;
+            margin-bottom: 10px;
             scrollbar-width: none;
+            perspective: 1000px;
         }
         .album-menu::-webkit-scrollbar { display: none; }
 
@@ -48,19 +87,51 @@
             border-radius: 50%;
             padding: 3px;
             cursor: pointer;
-            transition: 0.3s;
+            transition: transform 0.6s ease-in-out;
+            transform-style: preserve-3d;
+            -webkit-tap-highlight-color: transparent;
         }
         .album-circle:hover { transform: scale(1.1); }
+        
+        .rotar { transform: rotateY(360deg) scale(1.1) !important; }
+
         .album-circle img { width: 100%; height: 100%; border-radius: 50%; object-fit: cover; border: 2px solid white; }
 
         .seccion-contenido {
-            background: white;
             padding: 30px;
             border-radius: 25px;
             margin-bottom: 25px;
             box-shadow: 0 5px 15px rgba(0,0,0,0.02);
+            border: 2px solid transparent;
         }
-        h2 { color: var(--bts-purple); border-left: 5px solid var(--bts-purple); padding-left: 15px; }
+
+        #historia { 
+            background-color: #e1f5fe; 
+            border: 2px solid #b3e5fc;
+        }
+
+        #historia h2 {
+            text-transform: uppercase;
+            letter-spacing: 3px;
+        }
+
+        #integrantes { background-color: #fff3e0; }
+        #discografia { background-color: #f3e5f5; }
+        #seccion-referencias { background-color: #f5f5dc; }
+
+        .bulletproof-text {
+            text-indent: 40px; 
+            text-align: justify; 
+            text-shadow: 1px 1px 2px rgba(127, 85, 179, 0.3); 
+        }
+
+        h2 { 
+            font-family: 'Pacifico', cursive;
+            color: var(--bts-purple); 
+            border-left: 5px solid var(--bts-purple); 
+            padding-left: 15px;
+            word-spacing: 8px; 
+        }
 
         .lista-integrantes {
             display: grid;
@@ -78,14 +149,39 @@
             border-radius: 30px;
             border: 1px solid rgba(127, 85, 179, 0.2);
             box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+            transition: 0.2s;
+            cursor: pointer;
+            -webkit-tap-highlight-color: transparent;
         }
+        .integrante-card:active {
+            transform: scale(0.95);
+            background-color: #fce4ec;
+        }
+
         .foto-burbuja { width: 70px; height: 70px; border-radius: 50%; border: 3px solid var(--bts-purple); object-fit: cover; }
         .bt21-burbuja { width: 50px; height: 50px; border-radius: 50%; background: #eee; padding: 5px; border: 2px dashed var(--bts-purple); }
 
         .tabla-contenedor { overflow-x: auto; }
+        
+        table, th, td {
+            border: 1px solid var(--bts-purple);
+        }
         table { width: 100%; border-collapse: collapse; margin-top: 15px; }
         th { background: var(--bts-purple); color: white; padding: 12px; }
-        td { padding: 12px; text-align: center; border-bottom: 1px solid #eee; }
+        td { padding: 12px; text-align: center; }
+
+        .seccion-referencias {
+            padding: 25px;
+            border-radius: 25px;
+            margin-top: 50px;
+            font-size: 13px;
+        }
+        .lista-apa { padding-left: 30px; }
+        .lista-apa li { margin-bottom: 15px; padding-left: 5px; }
+        .referencia-link {
+            color: var(--bts-purple);
+            text-decoration: none;
+        }
 
         #detalle-album {
             display: none;
@@ -103,47 +199,54 @@
         .btn-cerrar {
             background: #333; color: white; border: none;
             padding: 10px 25px; border-radius: 20px; cursor: pointer; margin-top: 20px;
+            -webkit-tap-highlight-color: transparent;
         }
-        .caja-info {
-            text-align: left; padding: 20px; border-radius: 15px; margin-top: 15px; font-size: 14px;
-        }
+
+        .caja-info { text-align: left; padding: 20px; border-radius: 15px; margin-top: 15px; font-size: 14px; }
         .tracklist-grid { column-count: 2; padding-left: 20px; font-size: 12px; margin-top: 10px; line-height: 1.6; }
-        
-        .foto-grupal {
-            width: 100%; max-width: 450px; border-radius: 15px;
-            margin-bottom: 15px; box-shadow: 0 5px 15px rgba(0,0,0,0.1);
-        }
+        .foto-grupal { width: 100%; max-width: 450px; border-radius: 15px; margin-bottom: 15px; box-shadow: 0 5px 15px rgba(0,0,0,0.1); }
     </style>
 </head>
 <body>
 
     <header>
         <h1>BTS</h1>
-        <p style="color: var(--bts-purple); letter-spacing: 2px;">APOBANGPO 💜</p>
+        <p style="color: var(--bts-purple); letter-spacing: 2px; font-weight: bold;">💜BANGTAN SONYEONDAN💜</p>
         <div class="album-menu" id="menu-circulos"></div>
+        <nav class="nav-principal">
+            <a href="#historia" class="nav-link">Historia</a>
+            <a href="#integrantes" class="nav-link">Integrantes</a>
+            <a href="#menu-circulos" class="nav-link">Álbumes</a>
+            <a href="#integrantes" class="nav-link">BT21</a>
+            <a href="#discografia" class="nav-link">Discografía</a>
+            <a href="#seccion-referencias" class="nav-link">Referencias</a>
+        </nav>
     </header>
 
     <main>
-        <section class="seccion-contenido">
+        <section class="seccion-contenido" id="historia">
             <h2>The Bulletproof</h2>
-            <p>BTS no nació en la cima. En 2013, siete jóvenes de una agencia pequeña debutaron con el sueño de ser escuchados. Durmieron en una sola habitación y enfrentaron mil obstáculos, pero su fuerza fue su hermandad y su mensaje de "Amor Propio".</p>
-            <p>Hoy son el orgullo más grande de su país y una inspiración global. Su regreso en 2026 marca el inicio de una era donde su legado es ya indestructible.</p>
+            <p class="bulletproof-text">BTS no nació en la cima. En 2013, siete jóvenes de una agencia pequeña debutaron con el sueño de ser escuchados. Durmieron en una sola habitación y enfrentaron mil obstáculos, pero su fuerza fue su hermandad y su mensaje de "Amor Propio".</p>
+            <div style="text-align: center;">
+                <img src="https://alex-moonie.github.io/bts/bts.jpg" width="300" height="200" style="border-radius: 15px; border: 3px solid white;">
+            </div>
+            <p class="bulletproof-text">Hoy son el orgullo más grande de su país y una inspiración global. Su regreso en 2026 marca el inicio de una era donde su legado es ya indestructible.</p>
         </section>
 
-        <section class="seccion-contenido">
+        <section class="seccion-contenido" id="integrantes">
             <h2>Integrantes y BT21</h2>
             <ul class="lista-integrantes">
-                <li class="integrante-card"><img src="https://alex-moonie.github.io/bts/rm.jpg" class="foto-burbuja"> <div style="flex-grow: 1;"><strong>RM</strong><br><small>Líder, Rapero Principal</small></div> <img src="https://alex-moonie.github.io/bts/koya.png" class="bt21-burbuja" title="Koya"></li>
-                <li class="integrante-card"><img src="https://alex-moonie.github.io/bts/jin.jpg" class="foto-burbuja"> <div style="flex-grow: 1;"><strong>Jin</strong><br><small>Vocalista, Visual</small></div> <img src="https://alex-moonie.github.io/bts/rj.png" class="bt21-burbuja" title="RJ"></li>
-                <li class="integrante-card"><img src="https://alex-moonie.github.io/bts/suga.jpg" class="foto-burbuja"> <div style="flex-grow: 1;"><strong>Suga</strong><br><small>Rapero, Productor</small></div> <img src="https://alex-moonie.github.io/bts/shooky.png" class="bt21-burbuja" title="Shooky"></li>
-                <li class="integrante-card"><img src="https://alex-moonie.github.io/bts/jhope.jpg" class="foto-burbuja"> <div style="flex-grow: 1;"><strong>J-Hope</strong><br><small>Rapero, Bailarín Principal</small></div> <img src="https://alex-moonie.github.io/bts/mang.png" class="bt21-burbuja" title="Mang"></li>
-                <li class="integrante-card"><img src="https://alex-moonie.github.io/bts/jimin.jpg" class="foto-burbuja"> <div style="flex-grow: 1;"><strong>Jimin</strong><br><small>Vocalista, Bailarín Principal</small></div> <img src="https://alex-moonie.github.io/bts/chimmy.png" class="bt21-burbuja" title="Chimmy"></li>
-                <li class="integrante-card"><img src="https://alex-moonie.github.io/bts/v.jpg" class="foto-burbuja"> <div style="flex-grow: 1;"><strong>V</strong><br><small>Vocalista, Visual</small></div> <img src="https://alex-moonie.github.io/bts/tata.png" class="bt21-burbuja" title="Tata"></li>
-                <li class="integrante-card"><img src="https://alex-moonie.github.io/bts/jk.jpg" class="foto-burbuja"> <div style="flex-grow: 1;"><strong>Jungkook</strong><br><small>Vocalista Principal, Centro</small></div> <img src="https://alex-moonie.github.io/bts/cooky.png" class="bt21-burbuja" title="Cooky"></li>
+                <li class="integrante-card"><img src="https://alex-moonie.github.io/bts/rm.jpg" class="foto-burbuja"> <div style="flex-grow: 1;"><strong>RM</strong><br><small>Líder, Rapero Principal | BT21: Koya</small></div> <img src="https://alex-moonie.github.io/bts/koya.png" class="bt21-burbuja" title="Koya"></li>
+                <li class="integrante-card"><img src="https://alex-moonie.github.io/bts/jin.jpg" class="foto-burbuja"> <div style="flex-grow: 1;"><strong>Jin</strong><br><small>Vocalista, Visual | BT21: RJ</small></div> <img src="https://alex-moonie.github.io/bts/rj.png" class="bt21-burbuja" title="RJ"></li>
+                <li class="integrante-card"><img src="https://alex-moonie.github.io/bts/suga.jpg" class="foto-burbuja"> <div style="flex-grow: 1;"><strong>Suga</strong><br><small>Rapero, Productor | BT21: Shooky</small></div> <img src="https://alex-moonie.github.io/bts/shooky.png" class="bt21-burbuja" title="Shooky"></li>
+                <li class="integrante-card"><img src="https://alex-moonie.github.io/bts/jhope.jpg" class="foto-burbuja"> <div style="flex-grow: 1;"><strong>J-Hope</strong><br><small>Rapero, Bailarín Principal | BT21: Mang</small></div> <img src="https://alex-moonie.github.io/bts/mang.png" class="bt21-burbuja" title="Mang"></li>
+                <li class="integrante-card"><img src="https://alex-moonie.github.io/bts/jimin.jpg" class="foto-burbuja"> <div style="flex-grow: 1;"><strong>Jimin</strong><br><small>Vocalista, Bailarín Principal | BT21: Chimmy</small></div> <img src="https://alex-moonie.github.io/bts/chimmy.png" class="bt21-burbuja" title="Chimmy"></li>
+                <li class="integrante-card"><img src="https://alex-moonie.github.io/bts/v.jpg" class="foto-burbuja"> <div style="flex-grow: 1;"><strong>V</strong><br><small>Vocalista, Visual | BT21: Tata</small></div> <img src="https://alex-moonie.github.io/bts/tata.png" class="bt21-burbuja" title="Tata"></li>
+                <li class="integrante-card"><img src="https://alex-moonie.github.io/bts/jk.jpg" class="foto-burbuja"> <div style="flex-grow: 1;"><strong>Jungkook</strong><br><small>Vocalista Principal, Centro | BT21: Cooky</small></div> <img src="https://alex-moonie.github.io/bts/cooky.png" class="bt21-burbuja" title="Cooky"></li>
             </ul>
         </section>
 
-        <section class="seccion-contenido">
+        <section class="seccion-contenido" id="discografia">
             <h2>Cronología de Álbumes</h2>
             <div class="tabla-contenedor">
                 <table>
@@ -151,6 +254,18 @@
                     <tbody id="cuerpo-tabla"></tbody>
                 </table>
             </div>
+        </section>
+
+        <section class="seccion-referencias" id="seccion-referencias">
+            <h3 style="color: var(--bts-purple); text-align: center;">Referencias Bibliográficas</h3>
+            <ol class="lista-apa">
+                <li>Big Hit Music. (s.f.). <i>BTS Discography</i>. Recuperado de <a href="https://ibighit.com/bts/eng/discography/" class="referencia-link" target="_blank">https://ibighit.com/bts/eng/discography/</a></li>
+                <li>Billboard. (2026). <i>BTS: Biography & History</i>. Recuperado de <a href="https://www.billboard.com/artist/bts/" class="referencia-link" target="_blank">https://www.billboard.com/artist/bts/</a></li>
+                <li>Bruner, R. (2025). <i>BTS: South Korean male singing group</i>. Recuperado de <a href="https://www.britannica.com/topic/BTS" class="referencia-link" target="_blank">https://www.britannica.com/topic/BTS</a></li>
+                <li>BTS_official. (2026, abril 20). <i>BTS Official Updates</i> [X]. Recuperado de <a href="https://x.com/bts_bighit" class="referencia-link" target="_blank">https://x.com/bts_bighit</a></li>
+                <li>Genius. (s.f.). <i>BTS Lyrics</i>. Recuperado de <a href="https://genius.com/artists/Bts" class="referencia-link" target="_blank">https://genius.com/artists/Bts</a></li>
+                <li>Rolling Stone. (2025). <i>BTS Impact</i>. Recuperado de <a href="https://www.rollingstone.com/music" class="referencia-link" target="_blank">https://www.rollingstone.com/music</a></li>
+            </ol>
         </section>
     </main>
 
@@ -210,7 +325,7 @@
             'wings': { 
                 t: "Wings", a: "2016", i: "wings.png", g: "f19.jpg", color: "#4d4d4d", m: "m8.mp3",
                 h: "Un concepto profundo basado en la literatura (Demian), explorando la tentación y el crecimiento personal.",
-                e: "Tus alas son pequeñas ahora, pero juntas volaremos por encima de cualquier obstáculo.",
+                e: "Tus wings son pequeñas ahora, pero juntas volaremos por encima de cualquier obstáculo.",
                 c: ["Intro: Boy Meets Evil", "Blood Sweat & Tears", "Begin", "Lie", "Stigma", "First Love", "Reflection", "MAMA", "Awake", "Lost", "BTS Cypher 4", "Am I Wrong", "21st Century Girl", "2! 3!", "Interlude: Wings"] 
             },
             'ynwa': { 
@@ -280,32 +395,22 @@
 
         for (let key in data) {
             let album = data[key];
-            menu.innerHTML += `<div class="album-circle" style="background:${album.color}" onclick="abrirAlbum('${key}')"><img src="${baseImg}${album.i}"></div>`;
+            menu.innerHTML += `<div class="album-circle" style="background:${album.color}" onclick="abrirAlbum('${key}', this)"><img src="${baseImg}${album.i}"></div>`;
             tabla.innerHTML += `<tr><td><img src="${baseImg}${album.i}" style="width:40px; border-radius:5px;"></td><td>${album.t}</td><td>${album.a}</td><td>${album.c.length}</td></tr>`;
         }
 
-        function abrirAlbum(id) {
+        function abrirAlbum(id, elemento) {
+            elemento.classList.add('rotar');
+            setTimeout(() => { elemento.classList.remove('rotar'); }, 600);
             const album = data[id];
             const modal = document.getElementById('detalle-album');
             modal.style.borderTop = `10px solid ${album.color}`;
-
-            // CONTROL DE AUDIO ROBUSTO
-            if (currentAudio) { 
-                currentAudio.pause(); 
-                currentAudio.currentTime = 0; 
-            }
-
-            const rutaAudio = baseImg + album.m;
-            currentAudio = new Audio(rutaAudio);
-            
-            // Intentar reproducir y detectar errores en consola
-            currentAudio.play()
-                .then(() => console.log("Sonando: " + rutaAudio))
-                .catch(err => console.error("Error: Verifica el archivo en GitHub: " + rutaAudio));
-
+            if (currentAudio) { currentAudio.pause(); currentAudio.currentTime = 0; }
+            currentAudio = new Audio(baseImg + album.m);
+            currentAudio.play().catch(() => {});
             document.getElementById('info-dinamica').innerHTML = `
                 <img src="${baseImg}${album.g}" class="foto-grupal">
-                <h2 style="color:${album.color}; border:none; margin:0;">${album.t}</h2>
+                <h2 style="color:${album.color}; border:none; margin:0; font-family: 'Pacifico', cursive;">${album.t}</h2>
                 <div class="caja-info" style="background:${album.color}15; border-left: 5px solid ${album.color}">
                     <p><strong>📖 Historia:</strong> ${album.h}</p>
                     <p><strong>💜 Para ARMY:</strong> ${album.e}</p>
@@ -313,7 +418,6 @@
                     <strong style="color:${album.color}">TRACKLIST COMPLETO:</strong>
                     <ul class="tracklist-grid">${album.c.map(s => `<li>${s}</li>`).join('')}</ul>
                 </div>`;
-            
             modal.style.display = 'block';
             document.getElementById('capa').style.display = 'block';
         }
